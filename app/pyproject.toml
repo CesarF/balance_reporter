@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "balance_processor"
+version = "0.1.0"
+description = "Function to process a list of debit and credits transactions of an account, and send an email."
+authors = [
+  "César Forero <cforero@resurety.com>",
+]
+readme = "README.md"
+packages = [{include = "*", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "3.11"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+pytest-env = "^0.8.1"
+boto3 = "^1.26.101"
+faker = "^18.3.1"
+bandit = "^1.7.5"
+pylint = "^2.17.1"
+black = "^23.1.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# https://pycqa.github.io/isort/docs/configuration/config_files.html
+[tool.isort]
+# https://pycqa.github.io/isort/docs/configuration/black_compatibility/
+profile = "black"
+multi_line_output = 3
+
+# https://docs.pytest.org/en/7.2.x/reference/customize.html
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+pythonpath = "src"
+testpaths = [
+  "tests"
+]
+env = [
+  "LOG_LEVEL = DEBUG"
+]
