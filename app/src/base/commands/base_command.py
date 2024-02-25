@@ -1,5 +1,8 @@
+"""
+Resources to implement a command
+"""
 from abc import ABC, abstractmethod
-from typing import NoReturn
+from typing import Dict, NoReturn
 
 
 class BaseCommand(ABC):
@@ -8,5 +11,5 @@ class BaseCommand(ABC):
     """
 
     @abstractmethod
-    def __call__(self) -> NoReturn:
+    def __call__(self, event: Dict) -> NoReturn:
         raise NotImplementedError()

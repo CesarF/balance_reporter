@@ -21,5 +21,6 @@ CMD [ "src.main.aws" ]
 FROM base as pytest
 COPY tests tests
 COPY setup.cfg ./
+RUN poetry install --with local, aws, dev
 ENTRYPOINT [ "pytest" ]
 CMD [ "--cov=src", "-v", "-s", "--cov-fail-under=80", "--cov-report term-missing" ]

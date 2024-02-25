@@ -1,5 +1,8 @@
+"""
+Resources to implement a database handler
+"""
 from abc import ABC, abstractmethod
-from typing import NoReturn
+
 from base.entities.root_entity import Entity
 
 
@@ -10,5 +13,5 @@ class DBHandler(ABC):
     """
 
     @abstractmethod
-    def save(self, entity:Entity) -> Entity:
+    def save(self, entity: Entity) -> Entity:
         raise NotImplementedError()
