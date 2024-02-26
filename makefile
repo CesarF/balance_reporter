@@ -1,0 +1,24 @@
+.PHONY: \
+	build \
+	push \
+	login \
+	test \
+
+PWD := $(shell pwd)
+APP_VERSION := $(shell poetry --directory=${PWD}/app version --short)
+APP_NAME := $(shell poetry --directory=${PWD}/app version | cut -d ' ' -f1)
+
+STAGE ?= local
+REGION ?= us-east-1
+
+build:
+	docker build --rm --platform linux/amd64 -t ${APP_NAME}:${APP_VERSION} -f ${PWD}/app/Dockerfile --target ${STAGE} --label version=${APP_VERSION} ${PWD}/app
+
+run:
+	APP_IMAGE=${APP_NAME}:${APP_VERSION} VOLUME_PATH=${PWD}/data/ REGION=${REGION} docker compose --env-file local.env up
+
+test:
+	docker build --rm --platform linux/amd64 -t local-test-${APP_NAME}:${APP_VERSION} -f ${PWD}/app/Dockerfile --target pytest ${PWD}/app
+	docker run --rm -ti --platform linux/amd64 local-test-${APP_NAME}:${APP_VERSION}
+	docker rmi -f local-test-${APP_NAME}:${APP_VERSION}
+	docker rmi -f $(shell docker images -f "dangling=true" -q)

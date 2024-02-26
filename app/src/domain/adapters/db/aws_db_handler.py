@@ -1,17 +1,16 @@
 """
 Implementation of a database handler for AWS
 """
-from abc import ABC, abstractmethod
-
+from base.ports.db_handler import DBHandler
 from domain.models.account import Account
 
 
-class AWSDBHandler(ABC):
+class AWSDBHandler(DBHandler):
     """
     Represents a handler to manage database connections
     and operations
     """
 
-    @abstractmethod
     def save(self, entity: Account) -> Account:
+        entity
         raise NotImplementedError()

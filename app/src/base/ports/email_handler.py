@@ -3,8 +3,6 @@ Resources to implement a email sender handler
 """
 from abc import ABC, abstractmethod
 
-from base.entities.root_entity import Entity
-
 
 class EmailHandler(ABC):
     """
@@ -12,7 +10,9 @@ class EmailHandler(ABC):
     """
 
     @abstractmethod
-    def send_email(self, entity: Entity) -> bool:
+    def send_email(
+        self, message: str, recipient: str, subject: str, msg_format: str = "html"
+    ) -> bool:
         """
         abstract function to send email
         """

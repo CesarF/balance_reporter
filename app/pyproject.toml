@@ -5,15 +5,16 @@ description = "Function to process a list of debit and credits transactions of a
 authors = [
   "César Forero <cforero@resurety.com>",
 ]
-readme = "README.md"
 packages = [{include = "*", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.11"
-pydantic = "*"
+python = "3.11.6"
+pydantic = "^2.6.2"
 
 [tool.poetry.group.local.dependencies]
-pydantic = "*"
+pymongo = "^4.5.0"
+fastapi = "^0.103.1"
+uvicorn = "^0.23.2"
 
 [tool.poetry.group.aws.dependencies]
 boto3 = "^1.26.101"
@@ -48,5 +49,16 @@ testpaths = [
   "tests"
 ]
 env = [
-  "LOG_LEVEL = DEBUG"
+  "LOG_LEVEL = DEBUG",
+  "MONGO_USER = fake_user",
+  "MONGO_PASSWORD = fake_pwd",
+  "MONGO_HOST = db",
+  "MONGO_PORT = 0000",
+  "MONGO_DB_NAME = fake_db",
+  "AWS_DEFAULT_REGION = us-east-1",
+  "EMAIL_SENDER = fake_sender",
+  "EMAIL_RECIPIENT = fake_recipient",
+  "EMAIL_SENDER_PWD = fake_pwd",
+  "SMTP_SERVER = fake_server",
+  "SMTP_PORT = 0000"
 ]
