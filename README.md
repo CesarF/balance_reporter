@@ -38,7 +38,7 @@ Check the docker compose file for more details
 
 ### How to run
 
-Firstly, create a file named `local.env` in the root of this repository and include the next environment variables:
+Install Docker in your environment if they are not already installed. Then, create a file named `local.env` in the root of this repository and include the next environment variables:
 
 ```
 # local.env
