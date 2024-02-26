@@ -77,6 +77,8 @@ Also, you can see the information stored in the database entering the url `http:
 
 ![email](./images/mongo_db_example.png)
 
+Update the data in `./data/txns.csv` and execute again the curl command.
+
 ### How to test
 
 Just execute

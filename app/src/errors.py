@@ -25,3 +25,12 @@ class FileException(CustomBaseException):
 
     def __init__(self, message="File could not be processed."):
         super().__init__(message)
+
+
+class DatabaseException(CustomBaseException):
+    """
+    Used for database errors
+    """
+
+    def __init__(self, message="Database connection failed."):
+        super().__init__(message)

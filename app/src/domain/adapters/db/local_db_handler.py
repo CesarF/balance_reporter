@@ -9,6 +9,7 @@ from pymongo import MongoClient
 
 from base.ports.db_handler import DBHandler
 from domain.models.account import Account
+from errors import DatabaseException
 
 logger = logging.getLogger(__name__)
 
@@ -45,14 +46,24 @@ class LocalDBHandler(DBHandler):
     @classmethod
     def _connect(cls) -> str:
         """get current connection with the database"""
-        if cls._connection is None:
-            uri = cls._get_uri()
-            client = MongoClient(uri)
-            cls._connection = client[cls._mongo_db_name]
-            logger.warning(f"[DB] Connection stablished with: {cls._connection.name}")
+        try:
+            if cls._connection is None:
+                uri = cls._get_uri()
+                client = MongoClient(uri)
+                cls._connection = client[cls._mongo_db_name]
+                logger.warning(
+                    f"[DB] Connection stablished with: {cls._connection.name}"
+                )
+        except Exception as err:
+            logger.error(err, exc_info=True)
+            raise DatabaseException()
 
     def save(self, entity: Account) -> Account:
         """process event"""
-        collection = self._connection[self._COLLECTION]
-        response = collection.insert_one(json.loads(entity.json()))
-        logger.warning(f"[DB] Inserted data {response}")
+        try:
+            collection = self._connection[self._COLLECTION]
+            response = collection.insert_one(json.loads(entity.json()))
+            logger.warning(f"[DB] Inserted data {response}")
+        except Exception as err:
+            logger.error(err, exc_info=True)
+            raise DatabaseException()
