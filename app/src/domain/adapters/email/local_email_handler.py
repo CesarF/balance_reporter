@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class LocalEmailHandler(EmailHandler):
     """
-    AWS SES handler implementation to send emails
+    SMTP handler implementation to send emails
     """
 
     _password = os.environ["EMAIL_SENDER_PWD"]
@@ -26,7 +26,7 @@ class LocalEmailHandler(EmailHandler):
         self, message: str, recipient: str, subject: str, msg_format: str = "html"
     ) -> bool:
         """
-        Send an email using the entity information
+        Send an email using a SMTP server
         """
         msg = MIMEMultipart()
         msg["From"] = EMAIL_SENDER
@@ -40,10 +40,10 @@ class LocalEmailHandler(EmailHandler):
         try:
             server = smtplib.SMTP(self._smtp_server, self._smtp_port)
             server.starttls()
-            # Log in to SMTP server
             server.login(EMAIL_SENDER, self._password)
             # Send the email
             server.sendmail(EMAIL_SENDER, recipient, msg.as_string())
+            logging.info("Email sent successfully!")
             return True
         except Exception as error:
             logging.error(error, exc_info=True)
