@@ -86,3 +86,37 @@ Just execute
 ```bash
 make test
 ```
+
+## AWS Implementation
+
+The AWS implementation allows to run the application on a cloud provider using AWS services.
+
+### Implementation details
+
+- database: dynamodb
+- runtime: Lambda function
+- email: SES
+- file: S3 Bucket
+
+### How to deploy
+
+To deploy this in your own account, follow the next steps:
+
+First, install the next tools:
+
+- Terraform
+- AWS CLI
+- Docker
+- Access to a AWS account
+
+First you need to configure your AWS user. Use `aws configure` to set an access key and a secret key to your account. Note: your user requires enough permissions to manage s3, Dynamo, SES, Lambda, API Gateway and IAM.
+
+After configure your user, create the registry for the lambda function container image.
+
+```bash
+STACK=registry make tf-init
+
+STACK=registry make tf-plan
+
+STACK=registry make tf-deploy
+```
