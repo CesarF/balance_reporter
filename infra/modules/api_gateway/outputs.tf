@@ -20,7 +20,7 @@ output "execution_arn" {
 
 output "access_log_name" {
   description = "Access log name"
-  value       = module.api_access_logs.log_name
+  value       = aws_cloudwatch_log_group.access_logs.name
 }
 
 output "stage_name" {

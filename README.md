@@ -123,7 +123,7 @@ STACK=registry make tf-plan
 STACK=registry make tf-deploy
 ```
 
-Next, you will need to upload the image. Use the next commands:
+Next, you will need to upload the image using the next commands:
 
 ```bash
 # create the image for aws execution
@@ -134,4 +134,14 @@ make login ACCOUNT=<your account id>
 
 # upload your image
 make push ACCOUNT=<your account id>
+```
+
+It is time to create the rest of the infrastructure. It can takes a few minutes.
+
+```bash
+STACK=app make tf-init
+
+STACK=app make tf-plan
+
+STACK=app make tf-deploy
 ```

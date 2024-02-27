@@ -49,3 +49,6 @@ tf-deploy:
 
 tf-destroy:
 	terraform -chdir=${CH_DIR} destroy
+
+tf-validate:
+	terraform -chdir=${CH_DIR} validate
