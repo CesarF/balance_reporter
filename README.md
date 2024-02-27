@@ -98,6 +98,10 @@ The AWS implementation allows to run the application on a cloud provider using A
 - email: SES
 - file: S3 Bucket
 
+A general view of this architecture would be:
+
+![arch](./images/architecture_aws.png)
+
 ### How to deploy
 
 To deploy this in your own AWS account follow the next steps.
