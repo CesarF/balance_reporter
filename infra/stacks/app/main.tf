@@ -22,8 +22,9 @@ resource "random_string" "random" {
 }
 
 module "bucket" {
-  source      = "../../modules/s3_bucket"
-  bucket_name = "${var.service}-${terraform.workspace}--${random_string.random.result}"
+  source        = "../../modules/s3_bucket"
+  bucket_name   = "${var.service}-${terraform.workspace}--${random_string.random.result}"
+  public_access = true
 }
 
 module "table" {

@@ -34,6 +34,9 @@ test:
 	docker rmi -f local-test-${APP_NAME}:${APP_VERSION}
 	docker rmi -f $(shell docker images -f "dangling=true" -q)
 
+upload:
+	aws s3 cp ${PWD}/data s3://${BUCKET} --recursive --acl public-read --region ${REGION}
+
 tf-init:
 	terraform -chdir=${CH_DIR} init -reconfigure
 	terraform -chdir=${CH_DIR} workspace new ${WORKSPACE} || terraform -chdir=${CH_DIR} workspace select ${WORKSPACE}

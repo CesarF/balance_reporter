@@ -145,3 +145,20 @@ STACK=app make tf-plan
 
 STACK=app make tf-deploy
 ```
+
+If everything works, you should see this output in your terminal:
+
+```bash
+...
+Apply complete! Resources: x added, x changed, 0 destroyed.
+
+Outputs:
+
+bucket_name = "balance-processor-dev--<random-value>"
+```
+
+Copy the bucket name and execute the next command. The csv file will be uploaded to the s3 bucket
+
+```bash
+make upload BUCKET=<bucket-name>
+```
