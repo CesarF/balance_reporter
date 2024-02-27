@@ -31,7 +31,7 @@ class AWSFileHandler(FileHandler):
         try:
             bucket, key = file_path.split("/", 1)
 
-            response = self.s3.get_object(Bucket=bucket, Key=key)
+            response = self.s3_client.get_object(Bucket=bucket, Key=key)
             content = response["Body"].read().decode("utf-8")
 
             csv_data = StringIO(content)

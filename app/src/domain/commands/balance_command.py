@@ -37,6 +37,9 @@ class BalanceProcessorCommand(BaseCommand):
     def __call__(self) -> Any:
         # get file
         txlist = self._file_handler.load_file(FILE_PATH)
+        logger.info("File has been uploaded")
+        logger.debug(str(txlist))
+
         account = Account(id=str(uuid4()))
 
         # process file
@@ -47,8 +50,11 @@ class BalanceProcessorCommand(BaseCommand):
             )
             account.add_transaction(transaction)
 
+        logger.info("Account information has been set...")
+
         # store data in database
         self._db_handler.save(account)
+        logger.info("Information has been recorded in the database...")
 
         # send email
         resp = self._email_handler.send_email(

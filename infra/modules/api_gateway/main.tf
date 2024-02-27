@@ -7,6 +7,32 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
+resource "aws_iam_role" "main" {
+  name        = "apigateway_logging"
+  path        = "/apigateway/${terraform.workspace}/"
+  description = "Allows logs to ship to cloudwatch for basic logging."
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "logging" {
+  role       = aws_iam_role.main.id
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+
 resource "aws_api_gateway_method" "root" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_rest_api.main.root_resource_id

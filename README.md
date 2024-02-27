@@ -65,8 +65,8 @@ curl -XPOST "http://localhost:9000/execute" -d '{}'
 
 If everything worked as expected, you should see a response like this:
 
-```
-{'result':{'Message sent to <recipient email>':true}}
+```json
+{"result":{"Message sent to <recipient email>":true}}
 ```
 
 The recipient should have received an email like this one:
@@ -162,6 +162,7 @@ Apply complete! Resources: x added, x changed, 0 destroyed.
 
 Outputs:
 
+apigateway_url = "https://<api id>.execute-api.us-east-1.amazonaws.com/v1"
 bucket_name = "balance-processor-dev--<random-value>"
 ```
 
@@ -169,4 +170,8 @@ Copy the bucket name and execute the next command. The csv file will be uploaded
 
 ```bash
 make upload BUCKET=<bucket-name>
+```
+
+```bash
+curl -XPOST "<api gateway url>" -d '{}'
 ```

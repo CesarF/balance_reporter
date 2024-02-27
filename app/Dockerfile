@@ -9,7 +9,6 @@ RUN pip install poetry==$POETRY_VERSION
 RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/
 COPY src /app/src
-RUN which poetry
 
 # handler run
 FROM base as local

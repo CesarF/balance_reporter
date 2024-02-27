@@ -31,3 +31,15 @@ module "table" {
   source     = "../../modules/dynamo"
   table_name = "${var.service}-${terraform.workspace}"
 }
+
+resource "aws_ses_configuration_set" "default" {
+  name = "default"
+}
+
+resource "aws_ses_email_identity" "noreply" {
+  email = var.email_sender
+
+  depends_on = [
+    aws_ses_configuration_set.default
+  ]
+}

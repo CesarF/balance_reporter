@@ -1,7 +1,7 @@
 variable "is_mutable" {
   description = "Set true to enable mutability in all the repositories."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "repository_name" {

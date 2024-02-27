@@ -44,7 +44,7 @@ class LocalDBHandler(DBHandler):
         return f"mongodb://{mongo_user}:{mongo_pass}@{mongo_host}:{mongo_port}/{cls._mongo_db_name}?authSource={cls._mongo_db_name}"  # noqa: E231
 
     @classmethod
-    def _connect(cls) -> str:
+    def _connect(cls) -> None:
         """get current connection with the database"""
         try:
             if cls._connection is None:
@@ -64,6 +64,7 @@ class LocalDBHandler(DBHandler):
             collection = self._connection[self._COLLECTION]
             response = collection.insert_one(json.loads(entity.json()))
             logger.warning(f"[DB] Inserted data {response}")
+            return entity
         except Exception as err:
             logger.error(err, exc_info=True)
             raise DatabaseException()
