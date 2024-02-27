@@ -52,7 +52,7 @@ tf-deploy:
 	terraform -chdir=${CH_DIR} apply .plan
 
 tf-destroy:
-	terraform -chdir=${CH_DIR} destroy
+	terraform -chdir=${CH_DIR} destroy ${EXTRA_VARS}
 
 tf-validate:
 	terraform -chdir=${CH_DIR} validate

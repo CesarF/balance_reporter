@@ -75,7 +75,7 @@ The recipient should have received an email like this one:
 
 Also, you can see the information stored in the database entering the url `http://0.0.0.0:8081` in your browser; username `admin` password `pass`. Navigate to `accounts` database and select the record:
 
-![email](./images/mongo_db_example.png)
+![mongo](./images/mongo_db_example.png)
 
 Update the data in `./data/txns.csv` and execute again the curl command.
 
@@ -100,20 +100,19 @@ The AWS implementation allows to run the application on a cloud provider using A
 
 ### How to deploy
 
-To deploy this in your own account, follow the next steps:
+To deploy this in your own AWS account follow the next steps.
 
-First, install the next tools:
+First, verify these tools are installed in your environment:
 
 - Terraform
 - AWS CLI
 - Docker
-- Access to a AWS account
 
-First you need to configure your AWS user. Use `aws configure` to set an access key and a secret key to your account. Note: your user requires enough permissions to manage s3, Dynamo, SES, Lambda, API Gateway and IAM.
+Configure your AWS account user. Use `aws configure` to set an access key and a secret key from your account. Note: your user requires enough permissions to manage s3, Dynamo, SES, Lambda, API Gateway and IAM.
 
-Take into account all the components will be deployed in us-east-1 region.
+> Take into account all the components will be deployed in us-east-1 region.
 
-After configure your user, create the registry for the lambda function container image.
+After finishing the configuration, create the registry for the lambda function container image.
 
 ```bash
 STACK=registry make tf-init
@@ -123,7 +122,7 @@ STACK=registry make tf-plan
 STACK=registry make tf-deploy
 ```
 
-Next, you will need to upload the image using the next commands:
+Next, upload the image using the next commands:
 
 ```bash
 # create the image for aws execution
@@ -136,7 +135,11 @@ make login ACCOUNT=<your account id>
 make push ACCOUNT=<your account id>
 ```
 
-It is time to create the rest of the infrastructure. Create a file named `aws.env` in the root folder and add the next content:
+Access to ECR and verify the image was uploaded
+
+![registry](./images/registry_example.png)
+
+To create the application infrastructure you need to create a file named `aws.env` in the root path and add the next content:
 
 ```
 # aws.env
@@ -144,7 +147,7 @@ email_sender="<email>"
 email_recipient="<email>"
 ```
 
-Then, execute the next commands
+Then execute the next commands:
 
 ```bash
 STACK=app make tf-init
@@ -154,7 +157,7 @@ STACK=app EXTRA_VARS=-var-file=${PWD}/aws.env make tf-plan
 STACK=app make tf-deploy
 ```
 
-If everything works, you should see this output in your terminal:
+If everything worked as expected, you should see this output in your terminal:
 
 ```bash
 ...
@@ -166,12 +169,48 @@ apigateway_url = "https://<api id>.execute-api.us-east-1.amazonaws.com/v1"
 bucket_name = "balance-processor-dev--<random-value>"
 ```
 
-Copy the bucket name and execute the next command. The csv file will be uploaded to the s3 bucket
+Access to SES and verify the email sender (the same you configured in `aws.env` file).
+
+![email](./images/verify_email_example.png)
+
+Copy the bucket name and execute the next command. After finishing the csv file will be uploaded to the s3 bucket:
 
 ```bash
 make upload BUCKET=<bucket-name>
 ```
 
+Verify the file was uploaded as expected
+
+![file](./images/file_s3_example.png)
+
+And finally, test the application. Copy the api gateway path from the terraform output and execute:
+
 ```bash
 curl -XPOST "<api gateway url>" -d '{}'
+```
+
+If everything worked as expected, you should see a response like this:
+
+```json
+{"result":{"Message sent to <recipient email>":true}}
+```
+
+The recipient should have received an email like this one:
+
+![aws](./images/email_example_aws.png)
+
+If you access to Dynamo DB you will see the data is stored in the balance-processor table:
+
+![dynamo](./images/dynamo_example.png)
+
+### How to destroy
+
+After finishing your tests, it is time to destroy all the resources to avoid unnecessary costs in your account. Execute the next commands to destroy your infrastructure:
+
+```bash
+# delete app resources
+STACK=app EXTRA_VARS=-var-file=${PWD}/aws.env make tf-destroy
+
+# delete ecr repository
+STACK=registry make tf-destroy
 ```
