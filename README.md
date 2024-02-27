@@ -136,12 +136,20 @@ make login ACCOUNT=<your account id>
 make push ACCOUNT=<your account id>
 ```
 
-It is time to create the rest of the infrastructure. It can takes a few minutes.
+It is time to create the rest of the infrastructure. Create a file named `aws.env` in the root folder and add the next content:
+
+```
+# aws.env
+email_sender="<email>"
+email_recipient="<email>"
+```
+
+Then, execute the next commands
 
 ```bash
 STACK=app make tf-init
 
-STACK=app make tf-plan
+STACK=app EXTRA_VARS=-var-file=${PWD}/aws.env make tf-plan
 
 STACK=app make tf-deploy
 ```

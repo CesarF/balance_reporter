@@ -12,6 +12,7 @@ CH_DIR := ${PWD}/infra/stacks/${STACK}
 TF_VAR_FILE := ${CH_DIR}/workspaces/${WORKSPACE}/terraform.tfvars
 TF_BACKEND_FILE := ${CH_DIR}/workspaces/${WORKSPACE}/backend.tfvars
 
+EXTRA_VARS ?=
 STAGE ?= local
 REGION ?= us-east-1
 
@@ -45,7 +46,7 @@ tf-fmt:
 	terraform fmt -write=true -recursive infra
 
 tf-plan:
-	terraform -chdir=${CH_DIR} plan -out=.plan
+	terraform -chdir=${CH_DIR} plan ${EXTRA_VARS} -out=.plan
 
 tf-deploy:
 	terraform -chdir=${CH_DIR} apply .plan
