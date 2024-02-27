@@ -13,7 +13,7 @@ pydantic = "^2.6.2"
 
 [tool.poetry.group.local.dependencies]
 pymongo = "^4.5.0"
-fastapi = "^0.103.1"
+fastapi = "^0.109.1"
 uvicorn = "^0.23.2"
 
 [tool.poetry.group.aws.dependencies]
