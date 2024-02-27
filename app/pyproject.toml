@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "balance_processor"
+name = "balance-processor"
 version = "0.1.0"
 description = "Function to process a list of debit and credits transactions of an account, and send an email."
 authors = [

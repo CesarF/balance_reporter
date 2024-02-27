@@ -15,11 +15,18 @@ TF_BACKEND_FILE := ${CH_DIR}/workspaces/${WORKSPACE}/backend.tfvars
 STAGE ?= local
 REGION ?= us-east-1
 
+login:
+	aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
+
 build:
 	docker build --rm --platform linux/amd64 -t ${APP_NAME}:${APP_VERSION} -f ${PWD}/app/Dockerfile --target ${STAGE} --label version=${APP_VERSION} ${PWD}/app
 
 run:
 	APP_IMAGE=${APP_NAME}:${APP_VERSION} VOLUME_PATH=${PWD}/data/ REGION=${REGION} docker compose --env-file local.env up
+
+push:
+	docker tag ${APP_NAME}:${APP_VERSION} ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${APP_NAME}-${WORKSPACE}:${APP_VERSION}
+	docker push ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${APP_NAME}-${WORKSPACE}:${APP_VERSION}
 
 test:
 	docker build --rm --platform linux/amd64 -t local-test-${APP_NAME}:${APP_VERSION} -f ${PWD}/app/Dockerfile --target pytest ${PWD}/app

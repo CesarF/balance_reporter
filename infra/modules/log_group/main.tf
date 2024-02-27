@@ -7,8 +7,6 @@ resource "aws_kms_key" "symetric" {
 }
 
 resource "aws_cloudwatch_log_group" "main" {
-  # encryption is optional depending on the needs
-  #checkov:skip=CKV_AWS_158: "Ensure that CloudWatch Log Group is encrypted by KMS"
   name              = var.name
   retention_in_days = var.logs_retention_days
   kms_key_id        = var.encrypt ? aws_kms_key.symetric.0.key_id : null

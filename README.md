@@ -111,6 +111,8 @@ First, install the next tools:
 
 First you need to configure your AWS user. Use `aws configure` to set an access key and a secret key to your account. Note: your user requires enough permissions to manage s3, Dynamo, SES, Lambda, API Gateway and IAM.
 
+Take into account all the components will be deployed in us-east-1 region.
+
 After configure your user, create the registry for the lambda function container image.
 
 ```bash
@@ -119,4 +121,17 @@ STACK=registry make tf-init
 STACK=registry make tf-plan
 
 STACK=registry make tf-deploy
+```
+
+Next, you will need to upload the image. Use the next commands:
+
+```bash
+# create the image for aws execution
+make build STAGE=aws
+
+# login with ECR repository
+make login ACCOUNT=<your account id>
+
+# upload your image
+make push ACCOUNT=<your account id>
 ```
